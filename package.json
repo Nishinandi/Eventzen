@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "query-string": "^9.1.1",
+    "svix": "^1.43.0"
+  }
+}
