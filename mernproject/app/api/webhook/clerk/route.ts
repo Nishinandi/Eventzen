@@ -1,9 +1,18 @@
+
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { createUser } from '@/lib/actions/user.actions'
 import { deleteUser, updateUser } from '@/lib/actions/user.actions'
 import { NextResponse } from 'next/server'
+import { clerkClient } from '@clerk/clerk-sdk-node'
+
+// import { clerkClient } from '@clerk/nextjs';
+// const clerk = new Clerk({ apiKey: process.env.CLERK_API_KEY })
+// import { Clerk } from '@clerk/clerk-sdk-node';
+
+// const clerkClient = new Clerk({ apiKey: process.env.CLERK_API_KEY });
+
 
 export async function POST(req: Request) {
   const SIGNING_SECRET = process.env.SIGNING_SECRET
@@ -15,7 +24,7 @@ export async function POST(req: Request) {
   // Create new Svix instance with secret
   const wh = new Webhook(SIGNING_SECRET)
 
-  // Get headers
+  //Get headers
   const headerPayload = await headers()
   const svix_id = headerPayload.get('svix-id')
   const svix_timestamp = headerPayload.get('svix-timestamp')
@@ -59,8 +68,8 @@ export async function POST(req: Request) {
       clerkId: id,
       email: email_addresses[0].email_address,
       username: username!,
-      firstName: first_name,
-      lastName: last_name,
+      firstName: first_name,  // Default to empty string if null
+      lastName: last_name,    // Default to empty string if null
       photo: image_url,
     }
 
@@ -80,13 +89,17 @@ if (eventType === 'user.updated') {
     const {id, image_url, first_name, last_name, username } = evt.data
 
     const user = {
-      firstName: first_name,
-      lastName: last_name,
       username: username!,
-      photo: image_url,
+      firstName: first_name || '',
+      lastName: last_name || '',
+      photo: image_url || '',
+      // firstName: first_name,
+      // lastName: last_name,
+      // username: username!,
+      // photo: image_url,
     }
 
-    const updatedUser = await updateUser(id, user)
+    const updatedUser = await updateUser(id,user)
 
     return NextResponse.json({ message: 'OK', user: updatedUser })
   }
@@ -98,7 +111,6 @@ if (eventType === 'user.updated') {
 
     return NextResponse.json({ message: 'OK', user: deletedUser })
   }
- 
+
   return new Response('', { status: 200 })
 }
- 

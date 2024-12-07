@@ -1,17 +1,17 @@
 // USER PARAMS
 export type CreateUserParams = {
-    clerkId:string
-    firstName : string
-    lastName:string
-    userName : string
-    email:string
-    photo : string
+    clerkId:string;
+    firstName : string | null;
+    lastName:string | null;
+    username : string;
+    email:string;
+    photo : string;
 }
 
 export type UpdateUserParams = {
     firstName : string
     lastName:string
-    userName : string
+    username : string
     photo : string
 }
 
@@ -140,7 +140,7 @@ export type GetOrderByUserParams={
 
  export type RemoveUrlQueryParams ={
     params: string
-    keyToRemove:string[]
+    keysToRemove:string[]
  }
 
  export type SearchParamsProps ={

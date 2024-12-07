@@ -1,15 +1,11 @@
+
+
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Poppins } from 'next/font/google';
-
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
-} from '@clerk/nextjs'
+import { Suspense } from 'react'; 
+import { ClerkProvider, SignInButton, SignedIn, SignedOut, UserButton} from '@clerk/nextjs'
 
 
 const poppins = Poppins({
@@ -44,6 +40,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
+   
     <ClerkProvider>
       <html lang="en">
         <body>
@@ -57,5 +54,5 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
-  )
+  );
 }
